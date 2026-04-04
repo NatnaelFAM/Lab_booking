@@ -1,20 +1,20 @@
 class Resource
-  attr_accessor :booking_status
-  def initialize(id, name, category)
+  attr_reader :id, :name, :category
+  def initialize(id:, name:, category:)
     @id = id
     @name = name
     @category = category
-    @booking_status=nil
-    @available = true
+    @current_booking = nil
   end
   def available?
-    @available
+    @current_booking.nil?
   end
 
-  def occupy(booking)
-    @booking_status
+  def assign_booking(booking)
+    @current_booking = booking
   end
-  def vacate
-    @booking_status=nil
+
+  def clear_booking
+    @current_booking = nil
   end
 end
