@@ -2,7 +2,9 @@ require "minitest/autorun"
 require_relative "../user"
 require_relative "../resource"
 require_relative "../booking"
+require_relative "../booking_manager"
 require_relative "../errors"
+require_relative "../constants"
 
 class BookingTest < Minitest::Test
   def setup
@@ -31,7 +33,7 @@ class BookingTest < Minitest::Test
     booking = Booking.new(user: @user, resource: @resource)
     booking.cancel
 
-    assert_equal "cancelled", booking.status
+    assert_equal "canceled", booking.status
   end
 
   def test_cancelling_a_booking_makes_the_resource_available_again
@@ -40,6 +42,7 @@ class BookingTest < Minitest::Test
 
     assert_equal true, @resource.available?
   end
+
   def test_only_student_or_assistant_can_book
     admin = User.new(id: 3, name: "Sarah", role: "admin")
     assert_raises(BookingError) do
@@ -52,6 +55,6 @@ class BookingTest < Minitest::Test
     manager.create_booking(@user, @resource)
 
     assert_equal 1, manager.all_bookings.size
-    assert_equal "active", manager.active_bookings.first.status
+    assert_equal "active", manager.active_booking.first.status
   end
 end
